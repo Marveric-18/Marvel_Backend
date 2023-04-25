@@ -51,4 +51,7 @@ class U_User_Profile(models.Model):
     class Meta:
         verbose_name = "U_User_Profile"
 
-# def post_save_create_user(sender, instance, **kwargs):
+@receiver(post_save, sender=U_User)
+def post_save_create_user(sender, instance, created, **kwargs):
+    if created:
+        U_User_Profile.objects.create(user=instance, email=instance.email)

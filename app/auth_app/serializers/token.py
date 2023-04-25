@@ -17,7 +17,8 @@ class User_Serializer(serializers.ModelSerializer):
         fields = (
             'recovery_email',
             'is_active',
-            'two_way_auth'
+            'two_way_auth',
+            'is_superuser'
         )
 
     def to_internal_value(self, data):

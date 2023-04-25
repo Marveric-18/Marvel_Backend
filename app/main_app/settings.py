@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # Custom Apps
     'auth_app',
+    'user_activity',
 ]
 
 SITE_ID = 1

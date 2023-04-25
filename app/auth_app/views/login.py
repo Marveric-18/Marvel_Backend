@@ -13,12 +13,14 @@ from main_app.custom_func import upload_image_to_user_path
 def login_request(request):
     if request.method=="POST":
         try:
+            print(request.data)
             email_or_username = request.data.get("email", None)
             queryset = U_User.objects.filter(
                 Q(email__iexact=email_or_username) | Q(username__iexact=email_or_username)
             )
-            if not queryset.exists():
+            if not queryset.first():
                 return Response({"message":"User not found"},status=status.HTTP_404_NOT_FOUND)
+            
             password = request.data.get("password", None)
             if not queryset.distinct():
                 return Response({"message":"Something went wrong"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -46,13 +48,13 @@ def login_social(request):
     try:
         backend = request.data.get("backend", None)
         token = request.data.get("token", None)
-        full_name = request.data.get("token", None)
+        full_name = request.data.get("full_name", None)
         profile_image = request.data.get("profile_image", None)
         email_or_username = request.data.get("email", None)
         queryset = U_User.objects.filter(
             Q(email__iexact=email_or_username) | Q(username__iexact=email_or_username)
         )
-        if queryset.exists():
+        if queryset.first():
             return Response({"message":"You already have an account. Please login with username and password"},status=status.HTTP_404_NOT_FOUND)
         if not backend or not token:
             return Response({"message":"Please provide token and backend"},status=status.HTTP_403_FORBIDDEN)
@@ -70,7 +72,7 @@ def login_social(request):
             if len(full_name) == 2:
                 first_name = full_name[0]
                 last_name = full_name[0]
-        if not queryset.exists():
+        if not queryset.s():
             profile = U_User_Profile.objects.create(
                 email = email_or_username,
                 first_name = first_name,

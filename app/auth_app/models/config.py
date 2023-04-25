@@ -1,4 +1,3 @@
-from django.db.models.fields import BLANK_CHOICE_DASH
 from djongo import models
 
 config_choices = [
